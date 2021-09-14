@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.firebasecloudmessagingandroid">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,7 +28,7 @@
 
         <!-- Set the name of the channel for Android 8.0 and higher -->
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name=".FCMService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -34,5 +36,4 @@
         </service>
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

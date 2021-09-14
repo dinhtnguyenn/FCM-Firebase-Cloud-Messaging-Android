@@ -1,27 +1,23 @@
 package com.example.firebasecloudmessagingandroid;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
-import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Date;
 import java.util.Map;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class FCMService extends com.google.firebase.messaging.FirebaseMessagingService {
     private static final String TAG = "MyFirebaseService";
 
     @Override
@@ -29,7 +25,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Kiểm tra xem message có chứa notification payload không.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+            showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
         }
 
         // Kiểm tra xem message có chứa data payload không.
@@ -38,7 +34,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Map<String, String> dataPayload = remoteMessage.getData();
             String title = dataPayload.get("title");
             String body = dataPayload.get("body");
-            sendNotification(title, body);
+            showNotification(title, body);
 
         }
     }
@@ -61,7 +57,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // TODO: Implement this method to send token to your app server.
     }
 
-    private void sendNotification(String title, String body) {
+    private void showNotification(String title, String body) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
