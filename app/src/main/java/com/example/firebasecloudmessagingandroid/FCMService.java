@@ -41,11 +41,11 @@ public class FCMService extends com.google.firebase.messaging.FirebaseMessagingS
 
     /**
      * Token có thể thay đổi khi :
-     *  - App xóa Instance ID .
-     *  - App được khôi phục trên một thiết bị mới.
-     *  - Người dùng gỡ cài đặt hoặc cài đặt lại app.
-     *  - Người dúng xóa app data.
-     * */
+     * - App xóa Instance ID .
+     * - App được khôi phục trên một thiết bị mới.
+     * - Người dùng gỡ cài đặt hoặc cài đặt lại app.
+     * - Người dúng xóa app data.
+     */
     @Override
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
@@ -54,7 +54,7 @@ public class FCMService extends com.google.firebase.messaging.FirebaseMessagingS
     }
 
     private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
+        //lưu lại token devices khi token được refresh
     }
 
     private void showNotification(String title, String body) {
@@ -67,25 +67,29 @@ public class FCMService extends com.google.firebase.messaging.FirebaseMessagingS
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.logo)
-                        .setContentTitle(title)
-                        .setContentText(body)
+                        .setSmallIcon(R.drawable.logo) //set icon cho thông báo
+                        .setContentTitle(title) //tiêu đề thông báo
+                        .setContentText(body) //nội dung thông báo
                         .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
+                        .setSound(defaultSoundUri) //âm thanh khi nhận thông báo
                         .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // từ Android 8.0 trở lên, để hiển thị thông báo, bắt buộc cần phải có Notification Channel
+        /** từ Android 8.0 trở lên, để hiển thị thông báo, bắt buộc cần phải có Notification Channel */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     channelId,
-                    "Channel human readable title",
+                    "Channel title",
                     NotificationManager.IMPORTANCE_DEFAULT);
 
             notificationManager.createNotificationChannel(channel);
         }
 
+        /**
+         * mỗi thông báo được nhận trên devices đều có 1 id riêng
+         * sử dụng (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE) để tạo id ngẫu nhiên cho từng thông báo được nhận
+         * */
         notificationManager.notify((int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE), notificationBuilder.build());
     }
 }

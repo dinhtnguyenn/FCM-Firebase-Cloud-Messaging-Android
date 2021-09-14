@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         edtToken = findViewById(R.id.edtToken);
 
+        //get token devices
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
