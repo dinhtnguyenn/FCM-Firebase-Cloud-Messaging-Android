@@ -76,7 +76,7 @@ public class FCMService extends com.google.firebase.messaging.FirebaseMessagingS
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Since android Oreo notification channel is needed.
+        // từ Android 8.0 trở lên, để hiển thị thông báo, bắt buộc cần phải có Notification Channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     channelId,
